@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_906b1df5964f783a27e5af18dd116ed1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+    <div style="
+        position: fixed; 
+        bottom: 20px; left: 20px; width: 240px; 
+        background-color: white; z-index:9999; 
+        padding: 10px; border: 2px solid grey; font-size:14px;">
+        <b>Legend — landing</b><br>
+        <span style="color:green;">■</span> Observed<br>
+        <span style="color:darkgreen;">■</span> Ground truth<br>
+        <span style="color:red;">■</span> RAG (9.9 km)<br>
+        <span style="color:blue;">■</span> LSTM (10.7 km)<br>
+        <span style="color:orange;">■</span> Kalman (72.5 km)<br>
+        <span style="color:purple;">■</span> Mean similar flight<br>
+        <hr>
+        <i>Hover on points to see t (minutes)</i>
+    </div>
+    
+    
+            <div class="folium-map" id="map_906b1df5964f783a27e5af18dd116ed1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_906b1df5964f783a27e5af18dd116ed1 = L.map(
+                "map_906b1df5964f783a27e5af18dd116ed1",
+                {
+                    center: [43.57663, 9.29705],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 7,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_40a7e5aa5f238c5e3d31eaa41cbecbd2 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_40a7e5aa5f238c5e3d31eaa41cbecbd2.addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            var poly_line_08a54244158e55f1291914d82450af35 = L.polyline(
+                [[43.57663, 9.29705], [43.21358, 9.77413], [42.89145, 10.27937], [42.64293, 10.81485], [42.41779, 11.31126]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            poly_line_08a54244158e55f1291914d82450af35.bindTooltip(
+                `<div>
+                     Observed
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8e2f56a8d10560e01ea0b56affa6f042 = L.circleMarker(
+                [43.57663, 9.29705],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_8e2f56a8d10560e01ea0b56affa6f042.bindTooltip(
+                `<div>
+                     Observed — t = 0.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dcc736f6ad84e13730fefafa634f604e = L.circleMarker(
+                [43.21358, 9.77413],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_dcc736f6ad84e13730fefafa634f604e.bindTooltip(
+                `<div>
+                     Observed — t = 3.98 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b2be4d5483cbbb465cdc82cb5067f5c9 = L.circleMarker(
+                [42.89145, 10.27937],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_b2be4d5483cbbb465cdc82cb5067f5c9.bindTooltip(
+                `<div>
+                     Observed — t = 7.98 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5a1793f42b7a694c5523e8a66e057a40 = L.circleMarker(
+                [42.64293, 10.81485],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_5a1793f42b7a694c5523e8a66e057a40.bindTooltip(
+                `<div>
+                     Observed — t = 12.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4be2a06f59ba3a9116e52594b95645d4 = L.circleMarker(
+                [42.41779, 11.31126],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_4be2a06f59ba3a9116e52594b95645d4.bindTooltip(
+                `<div>
+                     Observed — t = 16.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_9dcf4023f175d9911a0c982133c80cdc = L.polyline(
+                [[42.23242, 11.75365], [42.07261, 12.10757], [41.88719, 12.2442], [41.80725, 12.27304], [41.79733, 12.25927]],
+                {"bubblingMouseEvents": true, "color": "darkgreen", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "darkgreen", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            poly_line_9dcf4023f175d9911a0c982133c80cdc.bindTooltip(
+                `<div>
+                     Ground truth
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5b442b1be9b9533faf399b74f7274ed5 = L.circleMarker(
+                [42.23242, 11.75365],
+                {"bubblingMouseEvents": true, "color": "darkgreen", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkgreen", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_5b442b1be9b9533faf399b74f7274ed5.bindTooltip(
+                `<div>
+                     Ground truth — t = 19.98 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_172a42f6393af43919aa8d478c4e2d47 = L.circleMarker(
+                [42.07261, 12.10757],
+                {"bubblingMouseEvents": true, "color": "darkgreen", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkgreen", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_172a42f6393af43919aa8d478c4e2d47.bindTooltip(
+                `<div>
+                     Ground truth — t = 24.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0c5ea2fbf31efe1e113353ba6e128d8e = L.circleMarker(
+                [41.88719, 12.2442],
+                {"bubblingMouseEvents": true, "color": "darkgreen", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkgreen", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_0c5ea2fbf31efe1e113353ba6e128d8e.bindTooltip(
+                `<div>
+                     Ground truth — t = 28.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_177e1245c65a71c6530af354e0048a9f = L.circleMarker(
+                [41.80725, 12.27304],
+                {"bubblingMouseEvents": true, "color": "darkgreen", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkgreen", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_177e1245c65a71c6530af354e0048a9f.bindTooltip(
+                `<div>
+                     Ground truth — t = 32.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c72a22e828b34da035065fc0b3d6a3dc = L.circleMarker(
+                [41.79733, 12.25927],
+                {"bubblingMouseEvents": true, "color": "darkgreen", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkgreen", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_c72a22e828b34da035065fc0b3d6a3dc.bindTooltip(
+                `<div>
+                     Ground truth — t = 35.93 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_e1f0bf0997de98ae86b6ca2f9602ad51 = L.polyline(
+                [[42.2, 11.85], [42.08, 11.93], [42.0, 12.1], [41.87, 12.25], [41.81, 12.27]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            poly_line_e1f0bf0997de98ae86b6ca2f9602ad51.bindTooltip(
+                `<div>
+                     RAG (9.9 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f5144067367b8268b3ace286b8da8b38 = L.circleMarker(
+                [42.2, 11.85],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_f5144067367b8268b3ace286b8da8b38.bindTooltip(
+                `<div>
+                     RAG (9.9 km) — t = 19.98 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8c258d9b2766560e22f548b056830358 = L.circleMarker(
+                [42.08, 11.93],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_8c258d9b2766560e22f548b056830358.bindTooltip(
+                `<div>
+                     RAG (9.9 km) — t = 24.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_14aea66475e57844021a968e86d1be2f = L.circleMarker(
+                [42.0, 12.1],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_14aea66475e57844021a968e86d1be2f.bindTooltip(
+                `<div>
+                     RAG (9.9 km) — t = 28.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_66218104df22a75a4c51c28f44b7487b = L.circleMarker(
+                [41.87, 12.25],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_66218104df22a75a4c51c28f44b7487b.bindTooltip(
+                `<div>
+                     RAG (9.9 km) — t = 32.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_79eacf65b5d3959a08e19e0b6203d1e9 = L.circleMarker(
+                [41.81, 12.27],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_79eacf65b5d3959a08e19e0b6203d1e9.bindTooltip(
+                `<div>
+                     RAG (9.9 km) — t = 35.93 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_b4c5ca68871bc2c8f9f2d6044382afb8 = L.polyline(
+                [[42.330810546875, 11.812052726745605], [42.017330169677734, 12.250264167785645], [41.93507766723633, 12.314751625061035], [41.85159683227539, 12.20711898803711], [41.85066604614258, 12.120803833007812]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            poly_line_b4c5ca68871bc2c8f9f2d6044382afb8.bindTooltip(
+                `<div>
+                     LSTM (10.7 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b75341cd4db922e2a9288d9338d81d55 = L.circleMarker(
+                [42.330810546875, 11.812052726745605],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_b75341cd4db922e2a9288d9338d81d55.bindTooltip(
+                `<div>
+                     LSTM (10.7 km) — t = 19.98 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a9d704297b0496a8c95dc72967a670f5 = L.circleMarker(
+                [42.017330169677734, 12.250264167785645],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_a9d704297b0496a8c95dc72967a670f5.bindTooltip(
+                `<div>
+                     LSTM (10.7 km) — t = 24.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1885517338e51e1bfe40b930bccf1e2f = L.circleMarker(
+                [41.93507766723633, 12.314751625061035],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_1885517338e51e1bfe40b930bccf1e2f.bindTooltip(
+                `<div>
+                     LSTM (10.7 km) — t = 28.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_183075fd3d6060f6a75e39c169531bc9 = L.circleMarker(
+                [41.85159683227539, 12.20711898803711],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_183075fd3d6060f6a75e39c169531bc9.bindTooltip(
+                `<div>
+                     LSTM (10.7 km) — t = 32.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_458787314f3d1c573bfeb69118114818 = L.circleMarker(
+                [41.85066604614258, 12.120803833007812],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_458787314f3d1c573bfeb69118114818.bindTooltip(
+                `<div>
+                     LSTM (10.7 km) — t = 35.93 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_2846441cab2d752b99e16ee1769a49df = L.polyline(
+                [[42.13662417638452, 11.830618163163292], [41.87506372054684, 12.344802181666461], [41.61350289365667, 12.858986836991514], [41.35193418663305, 13.373148069825518], [41.09036547960943, 13.887309276578472]],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            poly_line_2846441cab2d752b99e16ee1769a49df.bindTooltip(
+                `<div>
+                     Kalman (72.5 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_44c412660fddc61409045a80ab07892b = L.circleMarker(
+                [42.13662417638452, 11.830618163163292],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_44c412660fddc61409045a80ab07892b.bindTooltip(
+                `<div>
+                     Kalman (72.5 km) — t = 11230.82 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c6eb2836e65117008cfbfe2fe3ceb432 = L.circleMarker(
+                [41.87506372054684, 12.344802181666461],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_c6eb2836e65117008cfbfe2fe3ceb432.bindTooltip(
+                `<div>
+                     Kalman (72.5 km) — t = 6036.41 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_26891a819717386ebd3f62e32e75bdb6 = L.circleMarker(
+                [41.61350289365667, 12.858986836991514],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_26891a819717386ebd3f62e32e75bdb6.bindTooltip(
+                `<div>
+                     Kalman (72.5 km) — t = 842.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7a8bfa3746bf35648bebeeff4ffda171 = L.circleMarker(
+                [41.35193418663305, 13.373148069825518],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_7a8bfa3746bf35648bebeeff4ffda171.bindTooltip(
+                `<div>
+                     Kalman (72.5 km) — t = -4352.41 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3565ce8db0e14c85e65fc7955259091a = L.circleMarker(
+                [41.09036547960943, 13.887309276578472],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_3565ce8db0e14c85e65fc7955259091a.bindTooltip(
+                `<div>
+                     Kalman (72.5 km) — t = -9546.82 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_08d3c9c251b55447af2789220e46b65e = L.polyline(
+                [[42.394445999999995, 11.424147999999999], [42.16686, 11.744530000000001], [42.039488, 12.074729999999999], [41.859604000000004, 12.22979], [41.820712, 12.271483999999997]],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            poly_line_08d3c9c251b55447af2789220e46b65e.bindTooltip(
+                `<div>
+                     Mean similar flight
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9fd80560495e7c8ae6b763d27bcde9b9 = L.circleMarker(
+                [42.394445999999995, 11.424147999999999],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_9fd80560495e7c8ae6b763d27bcde9b9.bindTooltip(
+                `<div>
+                     Mean similar flight — t = 19.98 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f77b6dbb3eb6189d8074f5fd8bd98f65 = L.circleMarker(
+                [42.16686, 11.744530000000001],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_f77b6dbb3eb6189d8074f5fd8bd98f65.bindTooltip(
+                `<div>
+                     Mean similar flight — t = 24.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5134a970507196aeda7cf78936b5f6d6 = L.circleMarker(
+                [42.039488, 12.074729999999999],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_5134a970507196aeda7cf78936b5f6d6.bindTooltip(
+                `<div>
+                     Mean similar flight — t = 28.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b140a11155f5841999cd4f64031d312e = L.circleMarker(
+                [41.859604000000004, 12.22979],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_b140a11155f5841999cd4f64031d312e.bindTooltip(
+                `<div>
+                     Mean similar flight — t = 32.0 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4dda1e75f3004cf1177ebccb3bdbb962 = L.circleMarker(
+                [41.820712, 12.271483999999997],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_906b1df5964f783a27e5af18dd116ed1);
+        
+    
+            circle_marker_4dda1e75f3004cf1177ebccb3bdbb962.bindTooltip(
+                `<div>
+                     Mean similar flight — t = 35.93 min
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

@@ -1,0 +1,43 @@
+phase,method,mean,median,std,min,max
+take_off,without barometric altitude,21.58,22.7,4.19,14.6,27.4
+take_off,without barometric altitude,20.56,19.3,7.28,7.9,33.6
+take_off,without barometric altitude,-1.02,-0.4,8.82,-17.7,16.5
+take_off,without feedback loop,21.58,22.7,4.19,14.6,27.4
+take_off,without feedback loop,46.57,42.9,32.81,17.7,187.7
+take_off,without feedback loop,24.99,20.7,32.69,-7.5,162.7
+take_off,without retrieval,21.58,22.7,4.19,14.6,27.4
+take_off,without retrieval,68.7,68.7,26.69,26.9,125.1
+take_off,without retrieval,47.12,50.4,25.94,4.2,100.1
+take_off,without textual representation,21.58,22.7,4.19,14.6,27.4
+take_off,without textual representation,35.56,23.8,40.71,11.8,219.1
+take_off,without weather data,21.58,22.7,4.19,14.6,27.4
+take_off,without weather data,23.47,18.8,17.55,9.9,97.1
+take_off,without weather data,1.89,-1.9,18.0,-12.7,77.2
+cruising,without barometric altitude,10.73,11.6,3.8,2.3,14.8
+cruising,without barometric altitude,20.51,14.8,16.57,2.3,63.9
+cruising,without barometric altitude,9.78,5.6,18.19,-12.5,55.0
+cruising,without feedback loop,10.73,11.6,3.8,2.3,14.8
+cruising,without feedback loop,34.76,31.0,14.75,17.8,65.3
+cruising,without feedback loop,24.03,22.3,14.83,3.2,53.7
+cruising,without retrieval,10.73,11.6,3.8,2.3,14.8
+cruising,without retrieval,38.04,36.0,20.64,6.6,83.7
+cruising,without retrieval,27.31,25.9,22.46,-6.6,81.0
+cruising,without textual representation,10.73,11.6,3.8,2.3,14.8
+cruising,without textual representation,29.31,23.2,22.7,2.4,74.1
+cruising,without weather data,10.73,11.6,3.8,2.3,14.8
+cruising,without weather data,13.81,11.2,9.87,1.5,37.5
+cruising,without weather data,3.08,1.2,11.84,-12.1,32.9
+landing,without barometric altitude,2.97,3.2,1.21,0.3,4.6
+landing,without barometric altitude,4.9,3.7,3.78,0.2,13.9
+landing,without barometric altitude,1.92,1.7,3.86,-4.2,10.8
+landing,without feedback loop,2.97,3.2,1.21,0.3,4.6
+landing,without feedback loop,5.87,5.0,3.74,0.1,14.5
+landing,without feedback loop,2.9,2.6,4.18,-4.3,12.7
+landing,without retrieval,2.97,3.2,1.21,0.3,4.6
+landing,without retrieval,36.93,34.2,27.62,1.3,129.3
+landing,without retrieval,33.96,33.4,27.69,-3.3,126.4
+landing,without textual representation,2.97,3.2,1.21,0.3,4.6
+landing,without textual representation,4.67,3.7,3.27,0.4,12.7
+landing,without weather data,2.97,3.2,1.21,0.3,4.6
+landing,without weather data,3.53,3.0,2.1,0.9,10.1
+landing,without weather data,0.56,0.1,2.73,-3.7,7.2

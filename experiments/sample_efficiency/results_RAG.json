@@ -1,0 +1,87 @@
+{
+    "50": {
+        "take_off": { "error": 46.3 },
+        "cruising": { "error": 30.5 },
+        "landing":  { "error": 16.5 }
+    },
+    "100": {
+        "take_off": { "error": 47.7 },
+        "cruising": { "error": 23.9 },
+        "landing":  { "error": 17.2 }
+    },
+    "150": {
+        "take_off": { "error": 42.4 },
+        "cruising": { "error": 25.2 },
+        "landing":  { "error": 12.5 }
+    },
+    "200": {
+        "take_off": { "error": 36.5 },
+        "cruising": { "error": 25 },
+        "landing":  { "error": 13.1 }
+    },
+    "250": {
+        "take_off": { "error": 31.1 },
+        "cruising": { "error": 20.6 },
+        "landing":  { "error": 12.2 }
+    },
+    "300": {
+        "take_off": { "error": 32.0 },
+        "cruising": { "error": 18.9 },
+        "landing":  { "error": 12.3 }
+    },
+    "350": {
+        "take_off": { "error": 30.3 },
+        "cruising": { "error": 17.5 },
+        "landing":  { "error": 11.0 }
+    },
+    "400": {
+        "take_off": { "error": 29.7 },
+        "cruising": { "error": 18 },
+        "landing":  { "error": 10 }
+    },
+    "450": {
+        "take_off": { "error": 28.1 },
+        "cruising": { "error": 15.6 },
+        "landing":  { "error": 10.3 }
+    },
+    "500": {
+        "take_off": { "error": 27.3 },
+        "cruising": { "error": 14.9 },
+        "landing":  { "error": 10.0 }
+    },
+    "550": {
+        "take_off": { "error": 27.0 },
+        "cruising": { "error": 13.9 },
+        "landing":  { "error": 9.8 }
+    },
+    "600": {
+        "take_off": { "error": 26.7 },
+        "cruising": { "error": 12 },
+        "landing":  { "error": 8.5 }
+    },
+    "650": {
+        "take_off": { "error": 26.5 },
+        "cruising": { "error": 12.3 },
+        "landing":  { "error": 8.2 }
+    },
+    "700": {
+        "take_off": { "error": 26.3 },
+        "cruising": { "error": 11.5 },
+        "landing":  { "error": 6.5 }
+    },
+    "750": {
+        "take_off": { "error": 26.1 },
+        "cruising": { "error": 11.2 },
+        "landing":  { "error": 5.1 }
+    },
+    "800": {
+        "take_off": { "error": 26.0 },
+        "cruising": { "error": 11.0 },
+        "landing":  { "error": 5 }
+    },
+    "831": {
+        "take_off": { "error": 26.0 },
+        "cruising": { "error": 10.9 },
+        "landing":  { "error": 4.5 }
+    }
+}

@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "batch_dir": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches",
+    "data_source": "data/CDG-FCO/flight_data_with_minutes_since_start.json",
+    "val_ids_file": "data/CDG-FCO/lstm_validation_flight_ids.json",
+    "batch_sizes": [
+      50,
+      100,
+      150,
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500,
+      550,
+      600,
+      650,
+      700,
+      750,
+      800,
+      831
+    ],
+    "phases": [
+      "take_off",
+      "cruising",
+      "landing"
+    ]
+  },
+  "results": [
+    {
+      "sample_size": 50,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_50.json",
+      "LSTM": {
+        "take_off": 69.2,
+        "cruising": 134.2,
+        "landing": 21.2
+      }
+    },
+    {
+      "sample_size": 100,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_100.json",
+      "LSTM": {
+        "take_off": 57.6,
+        "cruising": 75.0,
+        "landing": 33.4
+      }
+    },
+    {
+      "sample_size": 150,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_150.json",
+      "LSTM": {
+        "take_off": 63.0,
+        "cruising": 78.9,
+        "landing": 21.3
+      }
+    },
+    {
+      "sample_size": 200,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_200.json",
+      "LSTM": {
+        "take_off": 54.4,
+        "cruising": 68.2,
+        "landing": 18.4
+      }
+    },
+    {
+      "sample_size": 250,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_250.json",
+      "LSTM": {
+        "take_off": 56.0,
+        "cruising": 65.0,
+        "landing": 24.5
+      }
+    },
+    {
+      "sample_size": 300,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_300.json",
+      "LSTM": {
+        "take_off": 90.7,
+        "cruising": 92.8,
+        "landing": 15.8
+      }
+    },
+    {
+      "sample_size": 350,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_350.json",
+      "LSTM": {
+        "take_off": 44.9,
+        "cruising": 65.2,
+        "landing": 17.4
+      }
+    },
+    {
+      "sample_size": 400,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_400.json",
+      "LSTM": {
+        "take_off": 63.3,
+        "cruising": 63.1,
+        "landing": 16.9
+      }
+    },
+    {
+      "sample_size": 450,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_450.json",
+      "LSTM": {
+        "take_off": 49.6,
+        "cruising": 58.7,
+        "landing": 17.3
+      }
+    },
+    {
+      "sample_size": 500,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_500.json",
+      "LSTM": {
+        "take_off": 44.1,
+        "cruising": 65.8,
+        "landing": 19.3
+      }
+    },
+    {
+      "sample_size": 550,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_550.json",
+      "LSTM": {
+        "take_off": 42.6,
+        "cruising": 65.9,
+        "landing": 17.2
+      }
+    },
+    {
+      "sample_size": 600,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_600.json",
+      "LSTM": {
+        "take_off": 41.0,
+        "cruising": 68.5,
+        "landing": 15.3
+      }
+    },
+    {
+      "sample_size": 650,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_650.json",
+      "LSTM": {
+        "take_off": 52.3,
+        "cruising": 59.9,
+        "landing": 15.3
+      }
+    },
+    {
+      "sample_size": 700,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_700.json",
+      "LSTM": {
+        "take_off": 46.8,
+        "cruising": 59.6,
+        "landing": 16.2
+      }
+    },
+    {
+      "sample_size": 750,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_750.json",
+      "LSTM": {
+        "take_off": 38.1,
+        "cruising": 67.0,
+        "landing": 16.3
+      }
+    },
+    {
+      "sample_size": 800,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_800.json",
+      "LSTM": {
+        "take_off": 48.2,
+        "cruising": 48.9,
+        "landing": 15.8
+      }
+    },
+    {
+      "sample_size": 831,
+      "batch_file": "data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/batches/batch_ids_831.json",
+      "LSTM": {
+        "take_off": 37.1,
+        "cruising": 60.7,
+        "landing": 14.4
+      }
+    }
+  ]
+}
