@@ -1,0 +1,41 @@
+{
+  "source": "TrajRAG_ADS_ICDM2026.pdf Table III",
+  "metric": "mean_haversine_error_km",
+  "cost_usd_per_1m_input_tokens": {
+    "gpt-4.1": 2.00,
+    "gpt-4o": 2.50,
+    "gpt-4o-mini": 0.15,
+    "gpt-5.1": 1.25,
+    "gpt-5.2": 1.75,
+    "Llama 3.3 7B": 0.27,
+    "Mistral 7B": 0.10,
+    "Qwen3-Max-Think.": 0.20
+  },
+  "models": {
+    "gpt-4.1": {
+      "takeoff": {"mean": 25.14, "std": 5.01},
+      "cruise": {"mean": 7.13, "std": 3.46},
+      "landing": {"mean": 2.98, "std": 2.14}
+    },
+    "gpt-4o": {
+      "takeoff": {"mean": 22.47, "std": 5.06},
+      "cruise": {"mean": 10.88, "std": 7.55},
+      "landing": {"mean": 13.85, "std": 12.41}
+    },
+    "gpt-4o-mini": {
+      "takeoff": {"mean": 86.80, "std": 39.10},
+      "cruise": {"mean": 47.70, "std": 23.99},
+      "landing": {"mean": 19.65, "std": 15.47}
+    },
+    "gpt-5.1": {
+      "takeoff": {"mean": 20.78, "std": 4.60},
+      "cruise": {"mean": 9.84, "std": 4.40},
+      "landing": {"mean": 2.46, "std": 2.33}
+    },
+    "gpt-5.2": {
+      "takeoff": {"mean": 20.82, "std": 4.86},
+      "cruise": {"mean": 7.12, "std": 3.32},
+      "landing": {"mean": 2.62, "std": 2.53}
+    }
+  }
+}

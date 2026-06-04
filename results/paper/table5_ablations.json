@@ -1,0 +1,46 @@
+{
+  "source": "TrajRAG_ADS_ICDM2026.pdf Table V",
+  "metric": "mean_haversine_error_km",
+  "TrajRAG": {
+    "takeoff": {"mean": 20.78, "std": 4.60, "max": 28.8},
+    "cruise": {"mean": 9.84, "std": 4.40, "max": 14.8},
+    "landing": {"mean": 2.46, "std": 2.33, "max": 4.6}
+  },
+  "ablations": {
+    "w/o retrieval": {
+      "takeoff": {"mean": 68.70, "std": 26.69, "p_value": 3.0e-8},
+      "cruise": {"mean": 38.04, "std": 20.64, "p_value": 5.7e-7},
+      "landing": {"mean": 36.93, "std": 27.62, "p_value": 1.5e-7}
+    },
+    "w/o LLM (mean retrieval)": {
+      "takeoff": {"mean": 48.94, "std": 37.77, "p_value": 6.9e-6},
+      "cruise": {"mean": 30.80, "std": 21.64, "p_value": 0.002},
+      "landing": {"mean": 8.52, "std": 6.42, "p_value": 0.008}
+    },
+    "w/o kinematic validation": {
+      "takeoff": {"mean": 22.03, "std": 6.90, "p_value": 0.764},
+      "cruise": {"mean": 9.99, "std": 9.96, "p_value": 0.356},
+      "landing": {"mean": 2.46, "std": 2.45, "p_value": 0.564}
+    },
+    "w/o feedback loop": {
+      "takeoff": {"mean": 46.57, "std": 32.81, "p_value": 6.2e-6},
+      "cruise": {"mean": 34.76, "std": 14.75, "p_value": 3.0e-8},
+      "landing": {"mean": 5.87, "std": 3.74, "p_value": 0.001}
+    },
+    "w/o textual representation": {
+      "takeoff": {"mean": 35.56, "std": 40.71, "p_value": 0.078},
+      "cruise": {"mean": 29.31, "std": 22.70, "p_value": 0.001},
+      "landing": {"mean": 4.67, "std": 3.27, "p_value": 0.017}
+    },
+    "w/o weather data": {
+      "takeoff": {"mean": 23.47, "std": 17.55, "p_value": 0.810},
+      "cruise": {"mean": 13.81, "std": 9.87, "p_value": 0.307},
+      "landing": {"mean": 3.53, "std": 2.10, "p_value": 0.355}
+    },
+    "w/o barometric altitude": {
+      "takeoff": {"mean": 20.56, "std": 7.28, "p_value": 0.755},
+      "cruise": {"mean": 20.51, "std": 16.57, "p_value": 0.015},
+      "landing": {"mean": 4.90, "std": 3.78, "p_value": 0.014}
+    }
+  }
+}

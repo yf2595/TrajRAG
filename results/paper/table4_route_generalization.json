@@ -1,0 +1,17 @@
+{
+  "source": "TrajRAG_ADS_ICDM2026.pdf Table IV",
+  "metric": "delta_mhe_km_s2_minus_s1",
+  "note": "Change in MHE when switching from in-route memory (S1) to mixed-route memory (S2).",
+  "routes": {
+    "Paris-Rome": {
+      "takeoff": 0.09,
+      "cruise": -0.11,
+      "landing": 0.71
+    },
+    "Barcelona-Munich": {
+      "takeoff": 0.74,
+      "cruise": -0.02,
+      "landing": -0.06
+    }
+  }
+}

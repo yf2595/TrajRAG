@@ -1,0 +1,57 @@
+{
+  "source": "TrajRAG_ADS_ICDM2026.pdf Table I",
+  "metric": "mean_haversine_error_km",
+  "note": "Published aggregates for verification when full data/API re-run is unavailable.",
+  "methods": {
+    "Kalman": {
+      "takeoff": {"mean": 60.95, "std": 30.45},
+      "cruise": {"mean": 39.06, "std": 25.10},
+      "landing": {"mean": 112.61, "std": 31.78}
+    },
+    "ARIMA": {
+      "takeoff": {"mean": 112.34, "std": 14.00},
+      "cruise": {"mean": 37.69, "std": 37.57},
+      "landing": {"mean": 73.82, "std": 22.55}
+    },
+    "LSTM": {
+      "takeoff": {"mean": 33.78, "std": 23.11},
+      "cruise": {"mean": 40.66, "std": 22.72},
+      "landing": {"mean": 18.62, "std": 14.33}
+    },
+    "BiLSTM": {
+      "takeoff": {"mean": 35.79, "std": 31.58},
+      "cruise": {"mean": 46.83, "std": 27.71},
+      "landing": {"mean": 11.17, "std": 4.91}
+    },
+    "Mean-Retrieval": {
+      "takeoff": {"mean": 48.94, "std": 37.77},
+      "cruise": {"mean": 30.80, "std": 21.64},
+      "landing": {"mean": 8.52, "std": 6.42}
+    },
+    "Numeric-kNN": {
+      "takeoff": {"mean": 66.19, "std": 29.34},
+      "cruise": {"mean": 32.49, "std": 17.12},
+      "landing": {"mean": 16.92, "std": 10.20}
+    },
+    "DLinear": {
+      "takeoff": {"mean": 43.99, "std": 13.18},
+      "cruise": {"mean": 21.01, "std": 7.03},
+      "landing": {"mean": 35.47, "std": 11.06}
+    },
+    "PatchTST": {
+      "takeoff": {"mean": 55.77, "std": 10.80},
+      "cruise": {"mean": 23.04, "std": 8.90},
+      "landing": {"mean": 38.17, "std": 9.28}
+    },
+    "iTransformer": {
+      "takeoff": {"mean": 47.89, "std": 8.08},
+      "cruise": {"mean": 19.79, "std": 5.40},
+      "landing": {"mean": 37.58, "std": 7.35}
+    },
+    "TrajRAG": {
+      "takeoff": {"mean": 20.78, "std": 4.60},
+      "cruise": {"mean": 9.84, "std": 4.40},
+      "landing": {"mean": 2.46, "std": 2.33}
+    }
+  }
+}

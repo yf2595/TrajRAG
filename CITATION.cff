@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "TrajRAG: Textual State-Driven Retrieval-Augmented Iterative Reconstruction of Spoofed Aircraft Trajectories"
+message: "If you use this software, please cite it as below."
+authors: []
+repository-code: "https://github.com/your-org/TrajRAG"
+keywords:
+  - GNSS spoofing
+  - ADS-B
+  - trajectory reconstruction
+  - retrieval-augmented generation
+  - aviation security
+preferred-citation:
+  type: conference-paper
+  title: "TrajRAG: Textual State-Driven Retrieval-Augmented Iterative Reconstruction of Spoofed Aircraft Trajectories"
+  collection-title: "IEEE International Conference on Data Mining (ICDM)"
+  year: 2026

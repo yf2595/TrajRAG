@@ -1,0 +1,23 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# TSLib clone (install locally per README)
+iTransformer-DLinear-PatchTST/TSLib/
+
+# Generated / large artifacts
+iTransformer-DLinear-PatchTST/adapted_flights.csv
+iTransformer-DLinear-PatchTST/synthetic_flights.csv
+
+# Optional: uncomment if you keep full flight JSONs locally only
+# data/*/flight_data_with_minutes_since_start.json
