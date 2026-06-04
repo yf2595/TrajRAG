@@ -1,6 +1,6 @@
 # TrajRAG: Textual State-Driven Retrieval-Augmented Iterative Reconstruction of Spoofed Aircraft Trajectories
 
-**ICDM ADS 2026** — Reproducibility artifact for [TrajRAG_ADS_ICDM2026.pdf](TrajRAG_ADS_ICDM2026.pdf).
+**ICDM ADS 2026** — Reproducibility 
 
 ## Scope of this repository
 
