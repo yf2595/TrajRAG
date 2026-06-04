@@ -7,13 +7,6 @@
 This repo is for **running TrajRAG** and **evaluating it against the baselines reported in the paper** under the controlled GNSS-blackout benchmark (simulated post-detection corruption, ground-truth ADS-B for scoring).
 
 
-| In scope                                                                                      | Out of scope (paper only)                        |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| TrajRAG pipeline + FAISS retrieval + kinematic validation                                     | Section VI real-world MLAT case studies          |
-| Table I baselines (Kalman, ARIMA, LSTM/BiLSTM, Numeric-kNN, DLinear, PatchTST, iTransformer)  | Full 1,544-flight public dataset (API licensing) |
-| Ablations (Table V), LLM sweep (Table III), data efficiency (Fig. 2), route memory (Table IV) | External spoofing **detector**                   |
-
-
 TrajRAG reconstructs horizontal positions after spoof detection by retrieving phase-consistent historical flights, conditioning **gpt-5.1** on textual ADS-B/weather states, and validating each LLM proposal with a kinematic envelope ([trajrag/config.py](trajrag/config.py)).
 
 ---
@@ -46,22 +39,6 @@ TrajRAG/
 ├── plots/                         # Regenerate figures
 └── fligh_radar_api.ipynb          # Collect trajectories (FR24 + Meteomatics)
 ```
-
----
-
-## Figures (controlled benchmark)
-
-### Fig. 1 — TrajRAG pipeline
-
-TrajRAG pipeline
-
-### Fig. 2 — Data efficiency
-
-Data efficiency
-
-### Retrieval size K (Sec. V-C)
-
-K sensitivity
 
 ---
 
