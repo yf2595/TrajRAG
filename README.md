@@ -172,6 +172,10 @@ Full table: [results/paper/table1_baselines.json](results/paper/table1_baselines
 
 ## How to reproduce
 
+Experiments were conducted on a Dell Latitude 7450 laptop with an Intel Core Ultra 7 165U CPU 
+(12 cores, 14 logical processors), 32 GB RAM, integrated Intel Graphics, and a 1 TB SK hynix SSD, 
+running Microsoft Windows 11 Enterprise 64-bit.
+
 ### 0 — Smoke test
 
 ```bash
