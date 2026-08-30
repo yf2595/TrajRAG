@@ -1,24 +1,18 @@
 # TrajRAG: Textual State-Driven Retrieval-Augmented Iterative Reconstruction of Spoofed Aircraft Trajectories
 
-**IEEE ICDM 2026 — ADS Track Reproducibility Artifact**
-
-## Scope of this repository
+**IEEE International Conference on Data Mining (ICDM) 2026 — ADS Track**
 
 This repository accompanies the paper:
 
 > **TrajRAG: Textual State-Driven Retrieval-Augmented Iterative Reconstruction of Spoofed Aircraft Trajectories**
 
-It contains the code and released experimental artifacts for running TrajRAG and evaluating it against the baselines reported in the paper under the controlled post-detection GNSS-blackout benchmark.
+TrajRAG reconstructs aircraft horizontal trajectories after GNSS interference is detected. The framework discards untrusted GNSS-derived horizontal observations, retrieves phase-consistent historical flight behavior, conditions an LLM on structured ADS-B and weather states, and validates each generated position with deterministic kinematic constraints.
 
-TrajRAG reconstructs horizontal positions after spoofing detection by retrieving phase-consistent historical flights, conditioning **gpt-5.1** on textual ADS-B/weather states, and validating each LLM proposal with a deterministic kinematic envelope defined in [`trajrag/config.py`](trajrag/config.py).
-
-The public artifact focuses on the reproducible research pipeline. Third-party data remain subject to their providers' terms, and some real-world operational case-study inputs may need to be reconstructed through the documented APIs.
+The repository contains the TrajRAG implementation, classical and learning-based baselines, ablation experiments, model-sensitivity experiments, data-efficiency analysis, mixed-route evaluation, and released artifacts used in the paper.
 
 ---
 
 ## Citation
-
-If you use this code, data, or evaluation artifact, please cite:
 
 ```bibtex
 @inproceedings{felendler2026trajrag,
@@ -29,8 +23,6 @@ If you use this code, data, or evaluation artifact, please cite:
 }
 ```
 
-Final DOI, page numbers, and proceedings metadata can be added after IEEE publication.
-
 ---
 
 ## Repository layout
@@ -39,53 +31,80 @@ Final DOI, page numbers, and proceedings metadata can be added after IEEE public
 TrajRAG/
 ├── TrajRAG_ADS_ICDM2026.pdf
 ├── trajrag/
-│   └── config.py                    # Paper hyperparameters (Sec. IV-G)
-├── methods/                         # TrajRAG + classical baselines
-├── iTransformer-DLinear-PatchTST/  # TSLib models + Numeric-kNN
-├── experiments/                     # Ablations, LLM sweep, sample-efficiency
-├── data/                            # Released samples, splits, and experiment artifacts
-├── results/paper/                   # Published aggregate results
-├── docs/figures/                    # Paper figures / supporting plots
-├── plots/                           # Figure-generation notebooks/scripts
-├── REPRODUCIBILITY.md               # Paper item -> repository artifact map
-└── fligh_radar_api.ipynb            # FR24 + Meteomatics data collection
+│   └── config.py
+├── methods/
+├── experiments/
+├── iTransformer-DLinear-PatchTST/
+├── data/
+├── results/paper/
+├── docs/figures/
+├── plots/
+├── REPRODUCIBILITY.md
+├── requirements.txt
+├── .env.example
+└── fligh_radar_api.ipynb
 ```
+
+Main components:
+
+| Component | Location | Description |
+| --- | --- | --- |
+| TrajRAG configuration | [`trajrag/config.py`](trajrag/config.py) | Paper hyperparameters and reconstruction settings |
+| TrajRAG and classical baselines | [`methods/`](methods/) | RAG, Kalman, ARIMA, LSTM, and BiLSTM experiments |
+| Modern forecasting baselines | [`iTransformer-DLinear-PatchTST/`](iTransformer-DLinear-PatchTST/) | DLinear, PatchTST, iTransformer, and Numeric-kNN |
+| Ablations and model sweeps | [`experiments/`](experiments/) | Component ablations and LLM-backbone experiments |
+| Data and experiment artifacts | [`data/`](data/) | Released samples, splits, embeddings, and result files |
+| Published aggregates | [`results/paper/`](results/paper/) | Machine-readable paper results |
+| Figure generation | [`plots/`](plots/) | Data-efficiency and sensitivity plots |
+| Reproducibility index | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Paper item → repository artifact mapping |
+| Data collection | [`fligh_radar_api.ipynb`](fligh_radar_api.ipynb) | FlightRadar24 + Meteomatics collection workflow |
 
 ---
 
 ## Environment
 
-| Requirement | Notes |
-| --- | --- |
-| Python | **3.10** recommended |
-| GPU | Optional for TrajRAG API runs; required/recommended for local TSLib/open-weight experiments |
-| TSLib | Clone into `iTransformer-DLinear-PatchTST/TSLib` |
+Python **3.10** is recommended.
 
 ```bash
 python -m venv .venv
+```
 
-# Windows
+Windows:
+
+```bash
 .venv\Scripts\activate
+```
 
-# Linux / macOS
+Linux / macOS:
+
+```bash
 source .venv/bin/activate
+```
 
+Install the Python dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
+For the TSLib baselines:
+
+```bash
 cd iTransformer-DLinear-PatchTST
 git clone --depth 1 https://github.com/thuml/Time-Series-Library.git TSLib
 ```
 
-Copy [`.env.example`](.env.example) to `.env` and provide only the credentials needed for the experiments you run.
+Copy [`.env.example`](.env.example) to `.env` and provide the credentials required by the experiments being run.
 
 | Variable | Purpose |
 | --- | --- |
-| `OPENAI_API_KEY` | Embeddings + **gpt-5.1** generation |
-| `OPENAI_API_KEY_2` | Alias used by some notebooks |
-| `FLIGHT_RADAR_API_KEY` | Flight-data collection |
-| `METEOMATICS_USERNAME` / `METEOMATICS_PASSWORD` | Weather collection |
+| `OPENAI_API_KEY` | `gpt-5.1` generation and `text-embedding-3-large` embeddings |
+| `OPENAI_API_KEY_2` | Alternate OpenAI key used by some notebooks |
+| `FLIGHT_RADAR_API_KEY` | FlightRadar24 data collection |
+| `METEOMATICS_USERNAME` | Meteomatics authentication |
+| `METEOMATICS_PASSWORD` | Meteomatics authentication |
 
-Do not commit `.env`, API keys, credentials, or provider-restricted datasets.
+Do not commit `.env`, API credentials, or provider-restricted raw data.
 
 ---
 
@@ -93,97 +112,115 @@ Do not commit `.env`, API keys, credentials, or provider-restricted datasets.
 
 ### Primary controlled benchmark
 
-| Corpus | Flights | Route | Public artifact |
-| --- | ---: | --- | --- |
-| Primary evaluation | 931 (831 train/validation + **100 test**) | CDG → FCO | Released samples / reproducibility metadata |
-| Mixed-route evaluation | 613 | BCN → MUC | Released samples / reproducibility metadata |
-| TSLib / Numeric-kNN multi-route | 6 corridors | See `adapt_data.py` | Partial route folders + reconstruction instructions |
+The paper evaluates TrajRAG on **1,544 real commercial flights** across two European corridors.
 
-Primary data paths used by the repository include:
+| Corpus | Flights | Route |
+| --- | ---: | --- |
+| Primary evaluation | 931 | CDG → FCO |
+| Mixed-route evaluation | 613 | BCN → MUC |
+
+The CDG→FCO corpus is split chronologically:
+
+- **831 flights** from April 19 to May 24, 2025 for training / validation and retrieval memory.
+- **100 flights** from May 25 to June 1, 2025 for held-out testing.
+
+Primary repository paths include:
 
 | Path | Role |
 | --- | --- |
-| `data/CDG-FCO/flight_data_with_minutes_since_start.json` | Primary trajectories |
-| `data/CDG-FCO/RESULTS/test_sample.json` | 100 held-out test IDs |
+| `data/CDG-FCO/flight_data_with_minutes_since_start.json` | Primary trajectory data |
+| `data/CDG-FCO/RESULTS/test_sample.json` | Held-out test-flight IDs |
 | `data/MULTI_ROUTE/EMBEDDINGS/` | Phase-specific FAISS indices |
-| `data/MULTI_ROUTE/RESULTS/MEAN_HAVERSINE_RAG.json` | TrajRAG per-flight MHE output |
-| `data/BCN-MUC/...` | Mixed-route evaluation |
-| `data/{MRS-MUC,NTE-MUC,BCN-MUC,BCN-CDG,CDG-FCO,BOD-VCE}/flight_data_with_minutes_since_start.json` | Six-route TSLib inputs |
+| `data/MULTI_ROUTE/RESULTS/MEAN_HAVERSINE_RAG.json` | TrajRAG per-flight reconstruction errors |
+| `data/BCN-MUC/` | Barcelona→Munich mixed-route evaluation |
+| `data/{MRS-MUC,NTE-MUC,BCN-MUC,BCN-CDG,CDG-FCO,BOD-VCE}/` | Multi-route forecasting inputs |
 
-Data collection / reconstruction is documented in [`fligh_radar_api.ipynb`](fligh_radar_api.ipynb). Where redistribution is restricted by provider terms, use the documented FlightRadar24 and Meteomatics queries instead of expecting a complete raw-data dump.
-
-Published aggregate values can be checked directly under [`results/paper/`](results/paper/) without re-running paid APIs.
+Where provider terms prevent redistribution of complete raw data, [`fligh_radar_api.ipynb`](fligh_radar_api.ipynb) documents the collection workflow using FlightRadar24 and Meteomatics.
 
 ---
 
-## Evaluation protocol
+## Controlled GNSS-blackout protocol
 
-The controlled evaluation follows the paper's post-detection recovery setting:
+The paper evaluates post-detection reconstruction rather than denoising.
 
-| Item | Paper / repository setting |
-| --- | --- |
-| Trust boundary | After detection, discard untrusted **horizontal GNSS-derived fields** |
-| Trusted auxiliary signal | Keep **barometric altitude** and timestamps |
-| Phases | Takeoff, cruise, landing |
-| Split | Chronological **831 train/validation + 100 held-out test flights** for CDG→FCO |
-| Blackout | Randomized spoofing onset and **5–15 missing time steps** (~10–30 min at ~120 s sampling) |
-| Metric | **MHE** — mean Haversine distance error in km |
-| Retrieval | **K = 5**, L2-normalized embeddings, cosine similarity via FAISS |
-| Memory | Separate **phase-aware** indices |
-| Reconstruction | Iterative retrieval → LLM proposal → kinematic validation |
-| Sampling | Approximately **120 s** between ADS-B states |
+Once GNSS interference is detected:
 
-### Important protocol note
+1. GNSS-derived horizontal fields are treated as untrusted.
+2. Post-detection latitude, longitude, ground speed, and heading are not supplied to the reconstruction loop.
+3. Barometric altitude and timestamps remain available.
+4. Reconstruction starts from the last verified state.
+5. TrajRAG iteratively retrieves phase-consistent historical segments, proposes the next latitude/longitude, and applies deterministic kinematic validation.
+6. Reconstruction continues until trusted reporting resumes or the flight terminates.
 
-Some development or diagnostic notebooks may expose a fixed-midpoint blackout such as:
+The controlled evaluation uses randomized spoofing onset times and blackout durations of **5–15 time steps**, corresponding to approximately **10–30 minutes** at the dataset's approximately 120-second sampling interval.
 
-```python
-SPOOF_INDEX = N // 2
-```
-
-That fixed-midpoint setting is useful for debugging, but it should **not** be treated as the paper's randomized corruption protocol. Paper reproduction should use the recorded randomized onset and 5–15-step blackout settings described in the final manuscript and indexed in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
+Some development notebooks also contain fixed-midpoint blackout settings such as `SPOOF_INDEX = N // 2`. Those runs are diagnostic configurations; the paper protocol is the randomized corruption setting described above.
 
 ---
 
-## Hyperparameters
+## TrajRAG configuration
 
 Paper defaults are defined in [`trajrag/config.py`](trajrag/config.py).
 
-### TrajRAG
-
 | Parameter | Value |
 | --- | --- |
-| Generation LLM | `gpt-5.1`, temperature **0** |
-| Summary LLM | `gpt-5.1`, temperature **0.3** for offline textual-state construction |
-| Embedding | `text-embedding-3-large` |
-| Retrieval **K** | **5** |
-| Kinematic **α** | **1.2** |
-| Nominal **Δt** | **120 s** |
+| Generation model | `gpt-5.1` |
+| Generation temperature | `0` |
+| Text-state summarization model | `gpt-5.1` |
+| Summarization temperature | `0.3` |
+| Embedding model | `text-embedding-3-large` |
+| Retrieval neighbors | `K = 5` |
+| Retrieval similarity | Cosine similarity via L2-normalized FAISS inner-product search |
+| Phase memories | Takeoff, cruise, landing |
+| Kinematic tolerance | `α = 1.2` |
+| Nominal sampling interval | `Δt = 120 s` |
 | Feedback loop | Enabled |
-| Retrieval refresh | Recomputed after each accepted reconstructed state |
+
+The validator constrains each proposed displacement according to:
+
+\[
+d_{\max} = \alpha v_t \Delta t
+\]
+
+where \(v_t\) is the previous accepted ground speed.
 
 ---
 
 ## Baselines
 
-### Table I baselines
+The paper compares TrajRAG with classical, recurrent, modern time-series, and retrieval-only baselines.
 
 | Method | Configuration | Entry point |
 | --- | --- | --- |
-| Kalman | Phase-wise filter under the same blackout setting | [`methods/KALMAN.ipynb`](methods/KALMAN.ipynb) |
+| Kalman | Phase-wise classical filtering | [`methods/KALMAN.ipynb`](methods/KALMAN.ipynb) |
 | ARIMA | Statistical per-phase forecasting | [`methods/ARIMA.ipynb`](methods/ARIMA.ipynb) |
-| LSTM / BiLSTM | hidden=128, layers=6, Adam lr=1e-2, batch=64, 100 epochs | [`methods/LSTM.ipynb`](methods/LSTM.ipynb) |
-| Mean-Retrieval | Top-k future-state averaging; no LLM | Ablation notebooks |
-| Numeric-kNN | k=5, standardized numeric prefix features | [`knn_baseline.py`](iTransformer-DLinear-PatchTST/knn_baseline.py) |
-| DLinear / PatchTST / iTransformer | seq/pred=5, epochs=30, seeds 0–2, lr=1e-3, batch=64 | [`run_all.py`](iTransformer-DLinear-PatchTST/run_all.py) |
-
-The modern forecasting baselines follow their forecasting setup, while TrajRAG uses the variable blackout horizon defined by the controlled corruption protocol. See the protocol notes below before interpreting cross-method horizon differences.
+| LSTM / BiLSTM | hidden=128, 6 layers, Adam lr=1e-2, batch=64, 100 epochs | [`methods/LSTM.ipynb`](methods/LSTM.ipynb) |
+| Mean-Retrieval | Top-k neighbor future-state averaging without an LLM | Ablation notebooks |
+| Numeric-kNN | k=5 using standardized numeric prefix features | [`iTransformer-DLinear-PatchTST/knn_baseline.py`](iTransformer-DLinear-PatchTST/knn_baseline.py) |
+| DLinear | TSLib forecasting baseline | [`iTransformer-DLinear-PatchTST/run_all.py`](iTransformer-DLinear-PatchTST/run_all.py) |
+| PatchTST | TSLib forecasting baseline | [`iTransformer-DLinear-PatchTST/run_all.py`](iTransformer-DLinear-PatchTST/run_all.py) |
+| iTransformer | TSLib forecasting baseline | [`iTransformer-DLinear-PatchTST/run_all.py`](iTransformer-DLinear-PatchTST/run_all.py) |
 
 ---
 
-## Published Table I
+## Metric
 
-Mean Haversine error (km), reported as mean ± standard deviation.
+Reconstruction accuracy is measured with **Mean Haversine Error (MHE)** in kilometers:
+
+\[
+\mathrm{MHE} =
+\frac{1}{|T|}
+\sum_{t \in T}
+d_{\mathrm{hav}}(\hat{x}_t, x_t)
+\]
+
+where \(T\) is the set of reconstructed indices, \(\hat{x}_t\) is the reconstructed position, and \(x_t\) is the uncorrupted reference position.
+
+---
+
+## Table I — comparison with baselines
+
+Mean Haversine error in km, reported as mean ± standard deviation.
 
 | Method | Takeoff | Cruise | Landing |
 | --- | ---: | ---: | ---: |
@@ -198,17 +235,122 @@ Mean Haversine error (km), reported as mean ± standard deviation.
 | iTransformer | 47.89 ± 8.08 | 19.79 ± 5.40 | 37.58 ± 7.35 |
 | **TrajRAG** | **20.78 ± 4.60** | **9.84 ± 4.40** | **2.46 ± 2.33** |
 
-Machine-readable aggregate values are stored in:
+Machine-readable paper values:
 
 [`results/paper/table1_baselines.json`](results/paper/table1_baselines.json)
 
 ---
 
-## How to reproduce
+## Table II — reconstruction latency and generation cost
 
-Experiments were conducted on a Dell Latitude 7450 laptop with an Intel Core Ultra 7 165U CPU, 32 GB RAM, integrated Intel Graphics, and Windows 11 Enterprise. GPU-backed runs are needed only for the relevant local-model / TSLib experiments.
+| Phase | Text construction (s) | Retrieval (s) | Generation (s) | Total (s) | Cost ($) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Takeoff | 3.2 | 0.53 | 1.5 | 5.23 | 0.014 |
+| Cruise | 4.0 | 0.51 | 2.3 | 6.81 | 0.018 |
+| Landing | 3.4 | 0.49 | 1.7 | 5.59 | 0.016 |
 
-### 0 — Smoke test
+Text construction is incurred once at blackout onset. The repeated retrieval + generation loop remains below the approximately 120-second ADS-B sampling interval.
+
+---
+
+## Table III — LLM backbone sensitivity
+
+| Model | Takeoff μ | Takeoff σ | Cruise μ | Cruise σ | Landing μ | Landing σ | Input cost / 1M tokens ($) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| gpt-4.1 | 25.14 | 5.01 | 7.13 | 3.46 | 2.98 | 2.14 | 2.00 |
+| gpt-4o | 22.47 | 5.06 | 10.88 | 7.55 | 13.85 | 12.41 | 2.50 |
+| gpt-4o-mini | 86.80 | 39.10 | 47.70 | 23.99 | 19.65 | 15.47 | 0.15 |
+| **gpt-5.1** | **20.78** | **4.60** | 9.84 | 4.40 | **2.46** | **2.33** | 1.25 |
+| gpt-5.2 | 20.82 | 4.86 | **7.12** | **3.32** | 2.62 | 2.53 | 1.75 |
+| Llama 3.3 7B | 52.89 | 13.22 | 52.16 | 13.04 | 13.43 | 3.36 | 0.27 |
+| Mistral 7B | 59.79 | 14.95 | 58.96 | 14.74 | 15.18 | 3.80 | 0.10 |
+| Qwen3-Max-Thinking | 41.39 | 10.35 | 40.82 | 10.21 | 10.51 | 2.63 | 0.20 |
+
+Entry point:
+
+[`experiments/test_multiple_LLM/test_multiple_LLM.ipynb`](experiments/test_multiple_LLM/test_multiple_LLM.ipynb)
+
+---
+
+## Table IV — mixed-route memory robustness
+
+The paper compares route-specific memory (S1) with a mixed-route memory containing trajectories from multiple corridors (S2).
+
+Values report the change in MHE from S1 to S2.
+
+| Route | Takeoff | Cruise | Landing |
+| --- | ---: | ---: | ---: |
+| Paris→Rome | +0.09 | -0.11 | +0.71 |
+| Barcelona→Munich | +0.74 | -0.02 | -0.06 |
+
+Entry point:
+
+[`data/BCN-MUC/RAG_for_new_trajectory.ipynb`](data/BCN-MUC/RAG_for_new_trajectory.ipynb)
+
+---
+
+## Table V — ablation studies
+
+The ablation study removes one component at a time while keeping the remaining pipeline fixed.
+
+The evaluated configurations include:
+
+- w/o retrieval
+- w/o LLM (mean retrieval)
+- w/o kinematic validation
+- w/o feedback loop
+- w/o textual representation
+- w/o weather data
+- w/o barometric altitude
+- full TrajRAG
+
+Entry points:
+
+```text
+experiments/with_without_*
+experiments/generate_full_table.ipynb
+```
+
+The paper reports paired two-sided Wilcoxon signed-rank tests over per-flight reconstruction errors.
+
+---
+
+## Figure 2 — data efficiency
+
+The data-efficiency experiment varies the amount of available historical training/reference data and compares TrajRAG with LSTM and iTransformer.
+
+Entry points:
+
+```text
+methods/LSTM.ipynb
+run_convergence.py
+data/EXPERIMENTS/MSE_CONVERGENCE_SPEED/
+```
+
+The corresponding plotting code is under [`plots/`](plots/).
+
+---
+
+## Real-world MLAT-supported case studies
+
+The controlled benchmark is complemented by four real GNSS-interference episodes for which FlightRadar24 reported **Terrestrial MLAT** positions.
+
+Only positions explicitly identified as Terrestrial MLAT are used as the independent consistency reference during the interference window.
+
+| Flight | Route | Region / onset | Window | Memory | Mean MLAT deviation (km) | Endpoint deviation (km) |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| A6-AQF | AMM → AUH | Saudi Arabian interior | 103 min | 200 | 6.96 | 1.97 |
+| TG941 | MXP → BKK | Black Sea / Northern Turkey | 46 min | 200 | 7.63 | 4.78 |
+| CK602 | BUD → CKG | Baltic region | 71 min | 200 | 7.95 | 5.01 |
+| QR8213 | DOH → MAD | Sinai–Red Sea / Gulf of Aqaba | 53 min | 200 | 6.95 | 6.36 |
+
+The case-study artifacts and paper-item mapping are documented in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
+
+---
+
+## Reproduction workflow
+
+### 1 — Smoke test
 
 ```bash
 cd iTransformer-DLinear-PatchTST
@@ -216,41 +358,43 @@ python run_baseline.py --model iTransformer --epochs 2
 python knn_baseline.py --runs 3
 ```
 
-Smoke tests verify that the environment is working. They do **not** reproduce the full paper.
-
-### 1 — Data preparation
+### 2 — Prepare data
 
 Use:
 
 [`fligh_radar_api.ipynb`](fligh_radar_api.ipynb)
 
-to collect / reconstruct the allowed flight and weather inputs, then preprocess them into phase-specific JSON under `data/<route>/`.
+to collect and preprocess the available flight and weather data into the route-specific format expected by the experiments.
 
-For paper reproduction, use the chronological split and recorded corruption settings indexed in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
+### 3 — Run TrajRAG
 
-### 2 — TrajRAG → Table I
-
-Run:
+Open:
 
 [`methods/RAG.ipynb`](methods/RAG.ipynb)
 
-Main stages:
+The notebook performs:
 
-1. Build offline textual state summaries.
-2. Embed and index phase-specific memory under `data/MULTI_ROUTE/EMBEDDINGS/`.
-3. Reconstruct the 100 held-out test flights using the recorded paper corruption settings.
-4. Write per-flight MHE results to:
-   `data/MULTI_ROUTE/RESULTS/MEAN_HAVERSINE_RAG.json`.
+1. textual-state construction,
+2. phase-specific embedding and FAISS indexing,
+3. iterative retrieval-conditioned reconstruction,
+4. kinematic validation,
+5. per-flight MHE evaluation.
 
-### 3 — Classical baselines → Table I
+Primary output:
 
-| Notebook | Output |
+```text
+data/MULTI_ROUTE/RESULTS/MEAN_HAVERSINE_RAG.json
+```
+
+### 4 — Run classical baselines
+
+| Method | Entry point |
 | --- | --- |
-| [`KALMAN.ipynb`](methods/KALMAN.ipynb) | `MEAN_HAVERSINE_KALMAN.json` |
-| [`ARIMA.ipynb`](methods/ARIMA.ipynb) | Phase-wise MHE under `RESULTS/` |
-| [`LSTM.ipynb`](methods/LSTM.ipynb) | `MEAN_HAVERSINE_LSTM.json` + BiLSTM block |
+| Kalman | [`methods/KALMAN.ipynb`](methods/KALMAN.ipynb) |
+| ARIMA | [`methods/ARIMA.ipynb`](methods/ARIMA.ipynb) |
+| LSTM / BiLSTM | [`methods/LSTM.ipynb`](methods/LSTM.ipynb) |
 
-### 4 — TSLib + Numeric-kNN → Table I
+### 5 — Run modern forecasting baselines
 
 ```bash
 cd iTransformer-DLinear-PatchTST
@@ -259,115 +403,51 @@ python run_all.py --itransformer --bonus
 python compile_results.py --compare-paper
 ```
 
-CLI details:
+Detailed commands:
 
 [`iTransformer-DLinear-PatchTST/RUN_EXPERIMENTS.md`](iTransformer-DLinear-PatchTST/RUN_EXPERIMENTS.md)
 
-### 5 — Extended controlled-benchmark analyses
+### 6 — Run extended analyses
 
-| Paper item | Repository entry point |
+| Paper item | Entry point |
 | --- | --- |
-| Fig. 2 — data efficiency | [`methods/LSTM.ipynb`](methods/LSTM.ipynb) + `run_convergence.py` |
-| Table III — LLM backbone sensitivity | [`experiments/test_multiple_LLM/test_multiple_LLM.ipynb`](experiments/test_multiple_LLM/test_multiple_LLM.ipynb) |
-| Table IV — mixed-route memory | [`data/BCN-MUC/RAG_for_new_trajectory.ipynb`](data/BCN-MUC/RAG_for_new_trajectory.ipynb) |
-| Table V — ablations | `experiments/with_without_*` → [`experiments/generate_full_table.ipynb`](experiments/generate_full_table.ipynb) |
-| K sensitivity | [`plots/plot_k_neighbors_vs_error.ipynb`](plots/plot_k_neighbors_vs_error.ipynb) |
-
----
-
-## Real-world MLAT-supported case studies
-
-Section VI of the paper complements the controlled benchmark with four operational GNSS-interference episodes for which FlightRadar24 reported **Terrestrial MLAT** positions.
-
-The four reported cases are:
-
-| Flight | Route | Interference window | Mean MLAT deviation (km) | Endpoint deviation (km) |
-| --- | --- | ---: | ---: | ---: |
-| A6-AQF | AMM → AUH | 103 min | 6.96 | 1.97 |
-| TG941 | MXP → BKK | 46 min | 7.63 | 4.78 |
-| CK602 | BUD → CKG | 71 min | 7.95 | 5.01 |
-| QR8213 | DOH → MAD | 53 min | 6.95 | 6.36 |
-
-Only fixes explicitly labelled **Terrestrial MLAT** are used as the independent consistency reference; ADS-B-labelled fixes inside the interference interval are discarded.
-
-Because these cases depend on provider data and event-specific provenance, consult [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) for the released artifacts and exact mapping for:
-
-- **Table VI** — case metadata,
-- **Table VII** — reconstruction consistency metrics,
-- **Fig. 3** — AMM→AUH reconstruction visualization.
-
-Where source data cannot be redistributed, the repository documents the collection/query procedure rather than relicensing provider data.
+| Fig. 2 data efficiency | `methods/LSTM.ipynb` + `run_convergence.py` |
+| Table III LLM sweep | `experiments/test_multiple_LLM/test_multiple_LLM.ipynb` |
+| Table IV mixed-route memory | `data/BCN-MUC/RAG_for_new_trajectory.ipynb` |
+| Table V ablations | `experiments/with_without_*` + `experiments/generate_full_table.ipynb` |
+| K-neighbor sensitivity | `plots/plot_k_neighbors_vs_error.ipynb` |
 
 ---
 
 ## Verify against the paper
 
+Windows:
+
 ```bash
-# Windows
 type results\paper\table1_baselines.json
+```
 
-# Linux / macOS
+Linux / macOS:
+
+```bash
 cat results/paper/table1_baselines.json
+```
 
+For the TSLib / Numeric-kNN comparison:
+
+```bash
 cd iTransformer-DLinear-PatchTST
 python compile_results.py --compare-paper
 ```
 
-`--compare-paper` prints per-method differences against the released paper aggregate file.
+The paper-to-artifact index is maintained in:
 
-For full TrajRAG comparison, first generate:
-
-`data/MULTI_ROUTE/RESULTS/MEAN_HAVERSINE_RAG.json`
-
-with the paper's recorded split and corruption settings.
+[`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)
 
 ---
 
-## Protocol notes
+## Data and use conditions
 
-1. **Paper blackout protocol** — The final paper uses randomized spoofing onset times and 5–15 missing steps. A fixed midpoint such as `SPOOF_INDEX = N // 2` is a diagnostic setting, not the paper protocol.
+Flight and weather data remain subject to the terms of the services from which they were obtained. The repository does not relicense provider-restricted raw data.
 
-2. **TSLib horizon vs. TrajRAG horizon** — TSLib forecasting baselines use their fixed forecasting window, while TrajRAG follows the blackout horizon of the controlled benchmark. Interpret this distinction exactly as described in the paper.
-
-3. **Chronological split** — The primary CDG→FCO evaluation uses 831 train/validation flights and 100 held-out flights. Additional baseline harnesses may have their own training partitioning; use the paper-matched configuration for reported comparisons.
-
-4. **gpt-5.1** — Main TrajRAG results use `gpt-5.1` as specified in Sec. IV-G. Older development snapshots using other backbones will not reproduce the published aggregate values.
-
-5. **Mean-Retrieval** — The retrieval-only baseline is reproduced through the matched *w/o LLM (mean retrieval)* pipeline used in the ablation study.
-
-6. **Third-party services** — FlightRadar24 and Meteomatics data are governed by their respective terms. Public release of code or derived metadata does not grant redistribution rights for provider-restricted raw data.
-
----
-
-## Reproducibility checklist
-
-- [ ] Python 3.10 environment created
-- [ ] `pip install -r requirements.txt`
-- [ ] TSLib cloned where required
-- [ ] `.env` configured only for the APIs being used
-- [ ] CDG→FCO data prepared
-- [ ] 831/100 chronological split verified
-- [ ] Paper corruption settings loaded (randomized onset, 5–15-step blackout)
-- [ ] Phase-specific embeddings built
-- [ ] TrajRAG evaluation completed
-- [ ] Classical and modern baselines completed
-- [ ] `compile_results.py --compare-paper` checked
-- [ ] Real-world case-study provenance checked separately where applicable
-
----
-
-## More documentation
-
-- [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) — paper item → repository artifact map
-- [`results/paper/README.md`](results/paper/README.md) — released aggregate snapshots
-- [`iTransformer-DLinear-PatchTST/RUN_EXPERIMENTS.md`](iTransformer-DLinear-PatchTST/RUN_EXPERIMENTS.md) — TSLib execution details
-
----
-
-## Data and licensing notes
-
-The repository is intended for research reproducibility.
-
-Flight and weather data remain subject to the terms of the services from which they were obtained. No third-party dataset is relicensed by this repository. Do not commit `.env`, API credentials, provider-restricted raw data, or proprietary artifacts.
-
-If you add a software `LICENSE` file, ensure that you are authorized to release all code covered by that license.
+The public artifact is intended for research reproducibility. API credentials, `.env` files, private data, and provider-restricted datasets are not part of the repository.
